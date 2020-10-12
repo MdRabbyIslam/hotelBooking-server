@@ -4,7 +4,7 @@ const cors = require("cors");
 //dotenv
 require("dotenv").config();
 
-const port = process.env.SERVER_PORT;
+// const port = process.env.SERVER_PORT;
 
 const app = express();
 app.use(cors());
@@ -19,7 +19,7 @@ admin.initializeApp({
 });
 
 //mongo db
-const password = "arabianHorse79";
+// const password = "arabianHorse79";
 const MongoClient = require("mongodb").MongoClient;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.d4pds.mongodb.net/burj-al-arab?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
@@ -30,6 +30,8 @@ const client = new MongoClient(uri, {
 client.connect((err) => {
   const bookings = client.db("burjAlArab").collection("bookings");
 
+  console.log("database connected");
+  //start api
   //here our apis with mongo db
   app.post("/addUser", (req, res) => {
     const newBooking = req.body;
@@ -37,7 +39,7 @@ client.connect((err) => {
       res.send(result.insertedCount > 0);
     });
   });
-
+  //get api
   //bookings list
   app.get("/bookings", (req, res) => {
     const bearer = req.headers.authorization;
@@ -69,10 +71,14 @@ client.connect((err) => {
       res.status(401).send("Unauthorized User");
     } //end bearer check
   }); //end booking list
+
+  //end api
 }); //mongodb client connection nd
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! this is rabby ");
 });
 
-app.listen(port);
+app.listen(5000, () => {
+  console.log("opening with port 6000");
+});
